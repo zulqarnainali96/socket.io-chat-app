@@ -1,0 +1,20 @@
+h1,
+p,
+li,
+ul {
+  font-family: "Raleway", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+a {
+  font-family: "Raleway", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+  text-decoration: none;
+  color: inherit;
+}
+.register-title {
+  font-weight: 600;
+}
