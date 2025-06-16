@@ -82,8 +82,10 @@ const Section2 = ({handleLogin} : {handleLogin: () => void}) => (
 );
 
 const Login = () => {
+  const navigate = useNavigate()
   const handleLogin = () => {
     // Logic for handling login goes here
+    navigate("/chat")
     console.log("Login button clicked");
   };
   return (
