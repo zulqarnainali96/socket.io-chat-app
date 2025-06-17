@@ -5,10 +5,10 @@ import React from "react";
 import useChats from "../hooks/use-chats";
 
 const Chat = () => {
-  const { chat_ref, chatMessage, msg, setMessage, sendMessage} = useChats();
+  const { chat_ref, chatMessage, msg, setMessage, sendMessage, openUserChat, personName} = useChats();
   return (
     <>
-      <ChatSection>
+      <ChatSection openUserChat={openUserChat} personName={personName}>
         <section className="h-[96.4%] w-full flex justify-baseline flex-col items-end">
           <div ref={chat_ref} className="chat-section h-[91vh] px-4 py-8 w-full flex justify-baseline flex-col items-center">
             {chatMessage.map((item) => {
