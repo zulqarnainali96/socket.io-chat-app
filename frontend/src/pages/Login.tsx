@@ -12,6 +12,8 @@ import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Button } from "../components/ui/button";
 import { NavLink, useNavigate } from "react-router-dom";
+import useLogin from "../hooks/use-login";
+import type { login } from "../types/type";
 
 // import { Loader2Icon } from "lucide-react";
 
@@ -19,7 +21,13 @@ const Section1 = () => (
   <img loading="lazy" className="w-full h-full" src={bgImage} />
 );
 
-const Section2 = ({handleLogin} : {handleLogin: () => void}) => (
+const Section2 = ({
+  handleLogin,
+  email,
+  password,
+  setEmail,
+  setPassword,
+}: login) => (
   <div className="flex flex-col items-center justify-center w-full h-screen">
     <h1 className="text-white text-3xl py-4">Login</h1>
     <Card className="w-full max-w-sm bg-transparent">
@@ -37,6 +45,9 @@ const Section2 = ({handleLogin} : {handleLogin: () => void}) => (
                 Email
               </Label>
               <Input
+                value={email}
+                className="text-white"
+                onChange={(e) => setEmail(e.target.value)}
                 id="email"
                 type="email"
                 placeholder="m@example.com"
@@ -55,7 +66,14 @@ const Section2 = ({handleLogin} : {handleLogin: () => void}) => (
                   Forgot your password?
                 </NavLink>
               </div>
-              <Input id="password" type="password" required />
+              <Input
+                className="text-white"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                id="password"
+                type="password"
+                required
+              />
             </div>
           </div>
         </form>
@@ -82,16 +100,19 @@ const Section2 = ({handleLogin} : {handleLogin: () => void}) => (
 );
 
 const Login = () => {
-  const navigate = useNavigate()
-  const handleLogin = () => {
-    // Logic for handling login goes here
-    navigate("/chat")
-    console.log("Login button clicked");
-  };
+  const { handleLogin, email, password, setEmail, setPassword } = useLogin();
   return (
     <LayoutWrapper
       section1={<Section1 />}
-      section2={<Section2 handleLogin={handleLogin} />}
+      section2={
+        <Section2
+          email={email}
+          password={password}
+          setEmail={setEmail}
+          setPassword={setPassword}
+          handleLogin={handleLogin}
+        />
+      }
     ></LayoutWrapper>
   );
 };

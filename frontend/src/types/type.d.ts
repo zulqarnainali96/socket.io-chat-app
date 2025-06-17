@@ -1,3 +1,5 @@
+import type React from "react";
+
 export interface Users {
   id: number;
   name: string;
@@ -14,3 +16,11 @@ type msg = {
   msg: string | undefined;
   date: string;
 };
+
+export interface login {
+  handleLogin : () => void, 
+  email : string, 
+  password : string, 
+  setPassword : React.Dispatch<React.SetStateAction<string>> 
+  setEmail : React.Dispatch<React.SetStateAction<string>>
+}

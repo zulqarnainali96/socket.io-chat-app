@@ -1,26 +1,38 @@
 const { createServer } = require("http");
+const mongoose = require("mongoose");
+const express = require("express");
 const { Server } = require("socket.io");
 const { corsOptions } = require("./utils/corsOptions");
+const cors = require("cors")
+const DatasebaseConnection = require("./db/database");
+const app = express();
 
-const server = createServer((req, res) => {
-  res.write("Hello World From chat-app");
-  res.end();
-});
+app.get("/",(req,res) => {
+  res.write('<h1 style="font-style:italic">Hello From Server</h1>')
+  res.end()
+})
+
+const server = createServer(app);
 const PORT = 5000;
 
-server.listen(PORT, function () {
-  console.log(`Server is running on PORT: http://localhost:${PORT}`);
-});
+// Datase Call
+DatasebaseConnection();
+
+// middlewares
+app.use(cors(corsOptions))
+app.use(express.json());
+
+// Routes
+const loginRoutes = require("./routes/login-routes");
+
+app.use("/api/v1/auth", loginRoutes);
+
+// end
 
 const io = new Server(server, {
   cors: {
     credentials: true,
-    origin: [
-      "http://localhost:5173",
-      "http://localhost:5174",
-      "http://localhost:3000",
-      "http://localhost:3001",
-    ],
+    origin: corsOptions.origin,
     optionsSuccessStatus: 200,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     preflightContinue: true,
@@ -30,11 +42,17 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log(`User Connected socket id = ${socket.id}`);
 
-  io.emit("welcome","Hello From Server")
-
+  io.emit("welcome", "Hello From Server");
 
   // socket disconnection
-  socket.on("disconnect",() => {
-    console.log(`User Disconnected`)
-  })
+  socket.on("disconnect", () => {
+    console.log(`User Disconnected`);
+  });
+});
+
+mongoose.connection.once("open", () => {
+  console.log(`Connected to MongoDB`);
+  server.listen(PORT, function () {
+    console.log(`Server is running on PORT: http://localhost:${PORT}`);
+  });
 });
