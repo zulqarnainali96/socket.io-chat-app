@@ -3,14 +3,31 @@ import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import React from "react";
 import useChats from "../hooks/use-chats";
+import { Loader2Icon } from "lucide-react";
 
 const Chat = () => {
-  const { chat_ref, chatMessage, msg, setMessage, sendMessage, openUserChat, personName} = useChats();
+  const {
+    chat_ref,
+    chatMessage,
+    msg,
+    setMessage,
+    sendMessage,
+    openUserChat,
+    personName,
+    loadChats,
+  } = useChats();
   return (
     <>
       <ChatSection openUserChat={openUserChat} personName={personName}>
-        <section className="h-[96.4%] w-full flex justify-baseline flex-col items-end">
-          <div ref={chat_ref} className="chat-section h-[91vh] px-4 py-8 w-full flex justify-baseline flex-col items-center">
+        <section className="h-[95%] w-full flex justify-baseline flex-col items-end">
+          <div
+            ref={chat_ref}
+            className="relative chat-section h-[91vh] px-4 py-8 w-full flex justify-baseline flex-col items-center"
+          >
+            <div className="typing absolute top-4 flex flex-col justify-center items-center">
+              <p className="text-lime-600 text-lg">Typing...</p>
+              {loadChats && <Loader2Icon className="animate-spin" />}
+            </div>
             {chatMessage.map((item) => {
               return (
                 <React.Fragment key={item.id}>
@@ -45,10 +62,14 @@ const Chat = () => {
                 }
               }}
               type="text"
-              placeholder="Type your message" 
+              placeholder="Type your message"
               required
             />
-            <Button className="h-12 cursor-pointer" variant="destructive" onClick={sendMessage}>
+            <Button
+              className="h-12 cursor-pointer"
+              variant="destructive"
+              onClick={sendMessage}
+            >
               Send
             </Button>
           </article>

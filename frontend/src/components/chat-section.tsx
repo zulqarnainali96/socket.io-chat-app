@@ -1,6 +1,6 @@
 import type React from "react";
 import { AppSidebar } from "./app-sidebar";
-import { SidebarProvider, SidebarTrigger } from "./ui/sidebar";
+import { SidebarProvider } from "./ui/sidebar";
 import Header from "./Header";
 import type { Users } from "../types/type";
 
@@ -13,7 +13,7 @@ const ChatSection = ({ children, openUserChat, personName }: props) => {
   return (
     <SidebarProvider>
       <AppSidebar openUserChat={openUserChat} />
-      <main className="w-full bg-amber-50">
+      <main className="w-full bg-amber-50 h-[100vh]">
         <Header personName={personName} />
         {children}
       </main>

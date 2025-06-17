@@ -9,8 +9,6 @@ export interface UserListProps {
 }
 type msg = {
   id: string | number;
-  lastMessage: string;
-  img: string;
   name: string;
   senderID: string;
   msg: string | undefined;
