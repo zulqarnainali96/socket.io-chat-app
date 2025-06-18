@@ -23,4 +23,13 @@ export interface login {
   password : string, 
   setPassword : React.Dispatch<React.SetStateAction<string>> 
   setEmail : React.Dispatch<React.SetStateAction<string>>
+  loading : boolean
+}
+export interface register {
+  handleRegister : () => void, 
+  email : string, 
+  password : string, 
+  setPassword : React.Dispatch<React.SetStateAction<string>> 
+  setEmail : React.Dispatch<React.SetStateAction<string>>
+  loading : boolean
 }

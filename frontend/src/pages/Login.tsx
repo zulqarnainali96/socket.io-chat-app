@@ -11,11 +11,10 @@ import {
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Button } from "../components/ui/button";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import useLogin from "../hooks/use-login";
 import type { login } from "../types/type";
-
-// import { Loader2Icon } from "lucide-react";
+import { Loader2Icon } from "lucide-react";
 
 const Section1 = () => (
   <img loading="lazy" className="w-full h-full" src={bgImage} />
@@ -27,6 +26,7 @@ const Section2 = ({
   password,
   setEmail,
   setPassword,
+  loading,
 }: login) => (
   <div className="flex flex-col items-center justify-center w-full h-screen">
     <h1 className="text-white text-3xl py-4">Login</h1>
@@ -84,8 +84,9 @@ const Section2 = ({
           type="submit"
           className="w-full cursor-pointer active:bg-gray-300"
           onClick={handleLogin}
+          disabled={loading}
         >
-          {/* <Loader2Icon className="animate-spin" /> */}
+          <Loader2Icon className="animate-spin" />
           Login
         </Button>
         <Button
@@ -100,7 +101,7 @@ const Section2 = ({
 );
 
 const Login = () => {
-  const { handleLogin, email, password, setEmail, setPassword } = useLogin();
+  const { handleLogin, email, password, setEmail, setPassword, isLoading } = useLogin();
   return (
     <LayoutWrapper
       section1={<Section1 />}
@@ -111,6 +112,7 @@ const Login = () => {
           setEmail={setEmail}
           setPassword={setPassword}
           handleLogin={handleLogin}
+          loading={isLoading}
         />
       }
     ></LayoutWrapper>

@@ -2,34 +2,34 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import apiClient from "../api/apiContext";
 
-const useLogin = () => {
+const useRegister = () => {
   const [email, setEmail] = useState<string | "">("");
+  const [isLoading,setIsLoading] = useState(false)
   const [password, setPassword] = useState<string | "">("");
-  const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate();
 
-  const handleLogin = () => {
+  const handleRegister = () => {
     // Logic for handling login goes here
-    console.log("Login button clicked");
+    console.log("Register button clicked");
     setIsLoading(true)
     apiClient
-      .get("/api/v1/auth/login-user", { email, password })
+      .post("/api/v1/auth/create-account", { email, password })
       .then((response) => {
         if (response.status === 201) {
-          navigate("/chat");
+          navigate("/login");
         }
         setIsLoading(false)
-      }).catch(error => console.log(error.message))
+      }).catch( err => console.log(err.message))
   };
 
   return {
     email,
+    isLoading,
     password,
     setEmail,
     setPassword,
-    handleLogin,
-    isLoading
+    handleRegister,
   };
 };
 
-export default useLogin;
+export default useRegister;
