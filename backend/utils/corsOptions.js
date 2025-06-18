@@ -7,7 +7,6 @@ const allowdOrigins = [
 
 module.exports.corsOptions = {
   origin: (origin, callback) => {
-    console.log(origin)
     if (allowdOrigins.indexOf(origin) !== -1 || !origin) {
       callback(null, true);
     } else {

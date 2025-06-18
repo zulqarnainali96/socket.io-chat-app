@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import apiClient from "../api/apiContext";
+import { setLocalStorage } from "../lib/local-storage";
 
 const useLogin = () => {
   const [email, setEmail] = useState<string | "">("");
@@ -17,6 +18,7 @@ const useLogin = () => {
       .then((response) => {
         if (response.status === 200) {
           navigate("/chat");
+          setLocalStorage("user_data",response.data.data)
         }
         setIsLoading(false);
       })

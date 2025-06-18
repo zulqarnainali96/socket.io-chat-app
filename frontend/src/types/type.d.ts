@@ -3,14 +3,13 @@ import type React from "react";
 export interface Users {
   id: number;
   name: string;
-  img: string;
   lastMessage: string;
 }
 export interface UserListProps {
   openUserChat: (user: Users) => void;
 }
 type msg = {
-  id: string | number;
+  id: string | number | null;
   name: string;
   senderID: string;
   msg: string | undefined;
@@ -18,18 +17,26 @@ type msg = {
 };
 
 export interface login {
-  handleLogin : () => void, 
-  email : string, 
-  password : string, 
-  setPassword : React.Dispatch<React.SetStateAction<string>> 
-  setEmail : React.Dispatch<React.SetStateAction<string>>
-  loading : boolean
+  handleLogin: () => void;
+  email: string;
+  password: string;
+  setPassword: React.Dispatch<React.SetStateAction<string>>;
+  setEmail: React.Dispatch<React.SetStateAction<string>>;
+  loading: boolean;
 }
 export interface register {
-  handleRegister : () => void, 
-  email : string, 
-  password : string, 
-  setPassword : React.Dispatch<React.SetStateAction<string>> 
-  setEmail : React.Dispatch<React.SetStateAction<string>>
-  loading : boolean
+  handleRegister: () => void;
+  name: string;
+  email: string;
+  password: string;
+  loading: boolean;
+  setPassword: React.Dispatch<React.SetStateAction<string>>;
+  setName: React.Dispatch<React.SetStateAction<string>>;
+  setEmail: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export interface userData {
+  id : string,
+  name : string,
+  email :string,
 }

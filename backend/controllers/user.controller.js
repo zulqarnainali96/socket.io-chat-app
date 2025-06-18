@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt")
 const createUser = async (req, res) => {
   console.log(req.body)
   try {
-    const { email, password } = req.body;
+    const { email, password, name } = req.body;
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });
@@ -19,6 +19,7 @@ const createUser = async (req, res) => {
 
     // Create new user
     const newUser = new User({
+      name,
       email,
       password, // Note: In a real app, you should hash the password before saving
     });
@@ -30,6 +31,7 @@ const createUser = async (req, res) => {
     const userResponse = {
       id: savedUser._id,
       email: savedUser.email,
+      name : savedUser.name,
       createdAt: savedUser.createdAt,
       updatedAt: savedUser.updatedAt,
     };
@@ -98,7 +100,7 @@ const loginUser = async (req, res) => {
       message: 'Login successful',
       data: {
         email: user.email,
-        userId: user._id
+        id: user._id
       }
     });
 

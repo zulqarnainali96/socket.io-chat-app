@@ -4,6 +4,7 @@ import apiClient from "../api/apiContext";
 
 const useRegister = () => {
   const [email, setEmail] = useState<string | "">("");
+  const [name, setName] = useState<string | "">("");
   const [isLoading, setIsLoading] = useState(false);
   const [password, setPassword] = useState<string | "">("");
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ const useRegister = () => {
     console.log("Register button clicked");
     setIsLoading(true);
     apiClient
-      .post("/api/v1/auth/create-account", { email, password })
+      .post("/api/v1/auth/create-account", { email, password, name })
       .then((response) => {
         if (response.status === 201) {
           navigate("/login");
@@ -28,8 +29,10 @@ const useRegister = () => {
 
   return {
     email,
+    name,
     isLoading,
     password,
+    setName,
     setEmail,
     setPassword,
     handleRegister,

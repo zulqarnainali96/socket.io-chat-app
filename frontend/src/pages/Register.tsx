@@ -15,15 +15,19 @@ import { Loader2Icon } from "lucide-react";
 import useRegister from "../hooks/use-register";
 import type { register } from "../types/type";
 
-const Section1 = () => <img loading="lazy" className="w-full h-full" src={bgImage} />
+const Section1 = () => (
+  <img loading="lazy" className="w-full h-full" src={bgImage} />
+);
 
 const Section2 = ({
   email,
   handleRegister,
   password,
   setEmail,
+  name,
+  setName,
   setPassword,
-  loading
+  loading,
 }: register) => (
   <div className="flex flex-col items-center justify-center w-full h-screen">
     <h1 className="text-white text-3xl py-4 register-title">Sign Up</h1>
@@ -37,6 +41,20 @@ const Section2 = ({
       <CardContent>
         <form>
           <div className="flex flex-col gap-6">
+            <div className="grid gap-2">
+              <Label className="text-white" htmlFor="email">
+                Name
+              </Label>
+              <Input
+                className="text-white"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                id="name"
+                type="text"
+                placeholder="your name"
+                required
+              />
+            </div>
             <div className="grid gap-2">
               <Label className="text-white" htmlFor="email">
                 Email
@@ -87,13 +105,23 @@ const Section2 = ({
 );
 
 const Register = () => {
-  const { handleRegister, email, setEmail, password, setPassword,isLoading } =
-    useRegister();
+  const {
+    handleRegister,
+    name,
+    setName,
+    email,
+    setEmail,
+    password,
+    setPassword,
+    isLoading,
+  } = useRegister();
   return (
     <LayoutWrapper
       section1={<Section1 />}
       section2={
         <Section2
+          name={name}
+          setName={setName}
           email={email}
           setEmail={setEmail}
           setPassword={setPassword}

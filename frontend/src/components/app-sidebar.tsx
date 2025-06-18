@@ -8,34 +8,23 @@ import {
 } from "./ui/sidebar";
 import userImage from "../assets/images/user-img.jpg";
 import type { UserListProps, Users } from "../types/type";
-
-const users = [
-  { id: 1, name: "Zain", img: userImage, lastMessage: "hi how are you," },
-  { id: 2, name: "Ali", img: userImage, lastMessage: "what's up how are you," },
-  {
-    id: 3,
-    name: "Nadia",
-    img: userImage,
-    lastMessage: "nothing what about you,",
-  },
-  { id: 4, name: "Sim", img: userImage, lastMessage: "Good Morning," },
-  { id: 5, name: "John", img: userImage, lastMessage: "Welcome," },
-];
+import useSidebar from "../hooks/use-sidebar";
 
 const UserList = ({ openUserChat }: UserListProps) => {
+  const { userList } = useSidebar();
   return (
     <>
-      {users.map((item) => {
+      {userList.map((item) => {
         return (
           <li
             key={item.id}
-            className="flex flex-row gap-2.5 py-6 px-2 bg-amber-400 rounded-3xl cursor-pointer transition-colors active:bg-amber-300"
+            className="flex flex-row gap-2.5 relative py-6 px-2 bg-amber-400 rounded-3xl cursor-pointer transition-colors active:bg-amber-300"
             onClick={() => openUserChat(item)}
-          >
+          > 
             <img
               loading="lazy"
               className="rounded-full w-11 h-11 object-cover"
-              src={item.img}
+              src={userImage}
             />
             <div>
               <h2 className="text-xl">{item.name}</h2>
@@ -43,6 +32,8 @@ const UserList = ({ openUserChat }: UserListProps) => {
                 <b>last message :</b>
                 <i>{item.lastMessage.substring(0, 14)}</i>
               </span>
+              <span className="absolute right-4 top-4 w-3 h-3 bg-green-400 shadow-3xl rounded-full"></span>
+              {/* <span className="absolute right-3 top-3 w-3 h-3 bg-red-600 shadow rounded-full"></span> */}
             </div>
           </li>
         );

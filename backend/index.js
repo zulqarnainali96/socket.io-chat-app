@@ -3,14 +3,14 @@ const mongoose = require("mongoose");
 const express = require("express");
 const { Server } = require("socket.io");
 const { corsOptions } = require("./utils/corsOptions");
-const cors = require("cors")
+const cors = require("cors");
 const DatasebaseConnection = require("./db/database");
 const app = express();
 
-app.get("/",(req,res) => {
-  res.write('<h1 style="font-style:italic">Hello From Server</h1>')
-  res.end()
-})
+app.get("/", (req, res) => {
+  res.write('<h1 style="font-style:italic">Hello From Server</h1>');
+  res.end();
+});
 
 const server = createServer(app);
 const PORT = 5000;
@@ -19,7 +19,7 @@ const PORT = 5000;
 DatasebaseConnection();
 
 // middlewares
-app.use(cors(corsOptions))
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Routes
@@ -28,6 +28,8 @@ const loginRoutes = require("./routes/login-routes");
 app.use("/api/v1/auth", loginRoutes);
 
 // end
+
+const activeUserList = new Map();
 
 const io = new Server(server, {
   cors: {
@@ -43,10 +45,19 @@ io.on("connection", (socket) => {
   console.log(`User Connected socket id = ${socket.id}`);
 
   io.emit("welcome", "Hello From Server");
+  socket.on("welcome", (userData) => {
+    activeUserList.set(userData.socketId, userData);
+    console.log(activeUserList)
+  });
+
+  socket.on("message", (userMessage) => {
+    console.log(userMessage);
+  });
 
   // socket disconnection
   socket.on("disconnect", () => {
     console.log(`User Disconnected`);
+    activeUserList.delete(socket.id)
   });
 });
 
