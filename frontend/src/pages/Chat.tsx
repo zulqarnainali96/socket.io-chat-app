@@ -6,6 +6,7 @@ import useChats from "../hooks/use-chats";
 import { Loader2Icon } from "lucide-react";
 
 const Chat = () => {
+
   const {
     chat_ref,
     chatMessage,

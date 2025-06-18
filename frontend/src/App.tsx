@@ -4,15 +4,7 @@ import Register from "./pages/Register";
 import WelcomeScreen from "./pages/WelcomeScreen";
 import Chat from "./pages/Chat";
 
-// const socket = io("ws://localhost:5000");
 function App() {
-  // socket.on("connect", function () {
-  //   console.log(socket.id);
-  // });
-
-  // socket.on("welcome", function (msg) {
-  //   console.log(msg);
-  // });
 
   return (
     <BrowserRouter>

@@ -42,6 +42,7 @@ const Section2 = ({
                 Email
               </Label>
               <Input
+                className="text-white"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 id="email"
@@ -57,6 +58,7 @@ const Section2 = ({
                 </Label>
               </div>
               <Input
+                className="text-white"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 id="password"
@@ -74,9 +76,10 @@ const Section2 = ({
           variant="outline"
           type="submit"
           disabled={loading}
+          aria-label="Register"
         >
-          <Loader2Icon className="animate-spin" />
-          Please wait...
+          {loading && <Loader2Icon color="green" className="animate-spin" />}
+          {loading ? "Please wait..." : "Register"}
         </Button>
       </CardFooter>
     </Card>

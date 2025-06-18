@@ -25,7 +25,7 @@ const Header = ({ personName }: { personName?: string }) => {
               <Bell size={32} className="cursor-pointer" color="gray" />
             </div>
           </PopoverTrigger>
-          <PopoverContent className="w-80 bg-amber-500 mt-12 mr-10 rounded-2xl">
+          <PopoverContent className="w-80 bg-yellow-100 shadow-2xl mt-12 mr-10 rounded-2xl">
             <div className="grid gap-4">
               {/* <div className="space-y-2">
               </div> */}

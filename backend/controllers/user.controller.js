@@ -1,5 +1,6 @@
 // controllers/user.controller.js
 const User = require("../models/user.model");
+const bcrypt = require("bcrypt")
 
 // Create a new user
 const createUser = async (req, res) => {
@@ -69,6 +70,7 @@ const getUsers = async (req, res) => {
 
 // User login
 const loginUser = async (req, res) => {
+  console.log(req.body)
   try {
     const { email, password } = req.body;
 

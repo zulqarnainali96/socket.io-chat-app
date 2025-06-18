@@ -5,21 +5,26 @@ import apiClient from "../api/apiContext";
 const useLogin = () => {
   const [email, setEmail] = useState<string | "">("");
   const [password, setPassword] = useState<string | "">("");
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = () => {
     // Logic for handling login goes here
     console.log("Login button clicked");
-    setIsLoading(true)
+    setIsLoading(true);
     apiClient
-      .get("/api/v1/auth/login-user", { email, password })
+      .post("/api/v1/auth/login-user", { email, password })
       .then((response) => {
-        if (response.status === 201) {
+        if (response.status === 200) {
           navigate("/chat");
         }
-        setIsLoading(false)
-      }).catch(error => console.log(error.message))
+        setIsLoading(false);
+      })
+      .catch((error) => console.log(error.message))
+      .finally(() => {
+        console.log("Finally")
+        setIsLoading(false);
+      });
   };
 
   return {
@@ -28,7 +33,7 @@ const useLogin = () => {
     setEmail,
     setPassword,
     handleLogin,
-    isLoading
+    isLoading,
   };
 };
 

@@ -85,9 +85,10 @@ const Section2 = ({
           className="w-full cursor-pointer active:bg-gray-300"
           onClick={handleLogin}
           disabled={loading}
+          aria-label="Login"
         >
-          <Loader2Icon className="animate-spin" />
-          Login
+          {loading && <Loader2Icon color="green" className="animate-spin" />}
+          {loading ? "Please wait..." : "Login"}
         </Button>
         <Button
           variant="outline"
@@ -101,7 +102,8 @@ const Section2 = ({
 );
 
 const Login = () => {
-  const { handleLogin, email, password, setEmail, setPassword, isLoading } = useLogin();
+  const { handleLogin, email, password, setEmail, setPassword, isLoading } =
+    useLogin();
   return (
     <LayoutWrapper
       section1={<Section1 />}
