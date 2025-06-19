@@ -1,17 +1,18 @@
 import type React from "react";
 
 export interface Users {
-  id: number;
+  id: string;
+  email: string;
   name: string;
   lastMessage: string;
 }
 export interface UserListProps {
   openUserChat: (user: Users) => void;
 }
-type msg = {
-  id: string | number | null;
+type Msg = {
+  id: string;
   name: string;
-  senderID: string;
+  receiverID?: string; 
   msg: string | undefined;
   date: string;
 };
@@ -36,7 +37,7 @@ export interface register {
 }
 
 export interface userData {
-  id : string,
-  name : string,
-  email :string,
+  id: string;
+  name: string;
+  email: string;
 }

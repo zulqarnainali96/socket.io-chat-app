@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import apiClient from "../api/apiContext";
+import { getLocalStorageData } from "../lib/local-storage";
 
 
 interface test {
@@ -8,7 +9,7 @@ interface test {
   email: string;
   lastMessage: string;
 }
-interface test2 {
+export interface test2 {
   id: string;
   name: string;
   email: string;
@@ -18,7 +19,8 @@ const useSidebar = () => {
   const [userList, setUserList] = useState<test2[]>([]);
 
   const getAllUsers = () => {
-    apiClient.get("/api/v1/auth/get-all-users").then((response) => {
+    const userData = getLocalStorageData("user_data")
+    apiClient.get("/api/v1/auth/get-all-users/"+userData.id).then((response) => {
       if (response.status === 200) {
         const { data } = response.data;
         const newadata = data?.map((item: test) => {

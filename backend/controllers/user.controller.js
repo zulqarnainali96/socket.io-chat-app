@@ -4,7 +4,6 @@ const bcrypt = require("bcrypt")
 
 // Create a new user
 const createUser = async (req, res) => {
-  console.log(req.body)
   try {
     const { email, password, name } = req.body;
 
@@ -53,12 +52,16 @@ const createUser = async (req, res) => {
 
 // Get all users (for testing purposes)
 const getUsers = async (req, res) => {
+  const id = req.params.id;
   try {
     const users = await User.find({}, { password: 0 }); // Exclude passwords from response
+    // Filter out the user with matching _id (convert both to string for comparison)
+    const filteredUsers = users.filter(user => user._id.toString() !== id);
+    
     res.status(200).json({
       success: true,
-      count: users.length,
-      data: users
+      count: filteredUsers.length, // Use filtered count
+      data: filteredUsers
     });
   } catch (error) {
     console.error('Error fetching users:', error);
@@ -72,7 +75,6 @@ const getUsers = async (req, res) => {
 
 // User login
 const loginUser = async (req, res) => {
-  console.log(req.body)
   try {
     const { email, password } = req.body;
 

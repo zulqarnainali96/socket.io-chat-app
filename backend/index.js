@@ -45,13 +45,16 @@ io.on("connection", (socket) => {
   console.log(`User Connected socket id = ${socket.id}`);
 
   io.emit("welcome", "Hello From Server");
+
   socket.on("welcome", (userData) => {
     activeUserList.set(userData.socketId, userData);
     console.log(activeUserList)
   });
 
   socket.on("message", (userMessage) => {
-    console.log(userMessage);
+    console.log(userMessage)
+    socket.join(userMessage.receiverID)
+    socket.to(userMessage.receiverID).emit("message",userMessage)
   });
 
   // socket disconnection

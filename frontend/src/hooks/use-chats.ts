@@ -1,17 +1,26 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { msg, Users } from "../types/type";
+import type { Msg, Users } from "../types/type";
 import { useSocket } from "./use-socket";
 import { getLocalStorageData } from "../lib/local-storage";
 
 const useChats = () => {
+  const userData = getLocalStorageData("user_data");
   const [msg, setMessage] = useState<string | undefined>("");
   const [personName, setPersonName] = useState<string>("No Open Chats");
-  const [personData, setPersoneData] = useState({})
+  const [personData, setPersonData] = useState<Users>();
   const [loadChats, setLoadChats] = useState<boolean>(false);
   const chat_ref = useRef<HTMLDivElement>(null);
-  const { sendPrivateMessage, socketRef, socketId } = useSocket();
+  const {
+    sendPrivateMessage,
+    socketRef,
+    // socketId,
+    socketOn,
+    // socketEmit,
+    socketOff,
+  } = useSocket();
 
-  const [chatMessage, setChatMessage] = useState<msg[]>([
+  const [chatMessage, setChatMessage] = useState<Msg[]>([
     // {
     //   id: 1,
     //   name: "Zain",
@@ -70,13 +79,12 @@ const useChats = () => {
   ]);
 
   const sendMessage = useCallback(() => {
-    const userData = getLocalStorageData("user_data");
-    const user_message = {
+    
+    const user_message: Msg = {
       id: userData.id,
-      socketID: socketId,
       name: "Zain",
       msg,
-      senderID: "321",
+      receiverID: personData?.id,
       date: new Intl.DateTimeFormat("default", {
         hour: "2-digit",
         hour12: true,
@@ -88,8 +96,8 @@ const useChats = () => {
     setMessage("");
   }, [chatMessage, msg]);
 
-  const openUserChat = (item: Users) => {
-    setPersoneData(item)
+  const openUserChat = (item: Users) => { 
+    setPersonData(item);
     setPersonName(item.name);
   };
 
@@ -102,16 +110,26 @@ const useChats = () => {
     }
   }, [chatMessage, msg]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    socketRef.current?.on("welcome", (msg) => {
-      console.log(msg);
-    // socketRef.current?.emit("welcome", {socketId,...personData});
-
+    socketOn("welcome", (data) => {
+      console.log(data);
     });
+
+    socketOn("message", (data) => {
+      console.log(data)
+      chatMessage.push(data);
+    });
+
+    return () => {
+      socketOff("welcome");
+      socketOff("message");
+    };
   }, [socketRef]);
 
   return {
     msg,
+    userData,
     chat_ref,
     personName,
     loadChats,

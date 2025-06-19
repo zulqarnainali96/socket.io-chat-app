@@ -6,7 +6,6 @@ import useChats from "../hooks/use-chats";
 import { Loader2Icon } from "lucide-react";
 
 const Chat = () => {
-
   const {
     chat_ref,
     chatMessage,
@@ -16,6 +15,7 @@ const Chat = () => {
     openUserChat,
     personName,
     loadChats,
+    userData,
   } = useChats();
   return (
     <>
@@ -29,18 +29,24 @@ const Chat = () => {
               <p className="text-lime-600 text-lg">Typing...</p>
               {loadChats && <Loader2Icon className="animate-spin" />}
             </div>
-            {chatMessage.map((item) => {
+            {chatMessage.map((item, i) => {
               return (
                 <React.Fragment key={item.id}>
-                  {item.senderID === "123" ? (
-                    <div className="send my-1 flex flex-col rounded-t-2xl justify-baseline items-start gap-1 self-start px-6 p-5 bg-amber-300">
+                  {item.receiverID === userData.id ? (
+                    <div
+                      key={i}
+                      className="send my-1 flex flex-col rounded-t-2xl justify-baseline items-start gap-1 self-start px-6 p-5 bg-amber-300"
+                    >
                       <h3>{item.msg}</h3>
                       <p className="flex-col-reverse">
                         <i className="text-sm">{item.date}</i>
                       </p>
                     </div>
                   ) : (
-                    <div className="receive my-1 flex-col rounded-t-2xl justify-baseline items-start gap-1 px-6 self-end flex p-5 bg-amber-300">
+                    <div
+                      key={i}
+                      className="receive my-1 flex-col rounded-t-2xl justify-baseline items-start gap-1 px-6 self-end flex p-5 bg-amber-300"
+                    >
                       <h3>{item.msg}</h3>
                       <p className="flex-col-reverse">
                         <i className="text-sm">{item.date}</i>
