@@ -48,19 +48,23 @@ io.on("connection", (socket) => {
 
   socket.on("welcome", (userData) => {
     activeUserList.set(userData.socketId, userData);
-    console.log(activeUserList)
+    console.log(activeUserList);
+  });
+
+  socket.on("join-room", (id) => {
+    socket.join(id);
   });
 
   socket.on("message", (userMessage) => {
-    console.log(userMessage)
+    console.log(userMessage);
     socket.join(userMessage.receiverID)
-    socket.to(userMessage.receiverID).emit("message",userMessage)
+    socket.to(userMessage.receiverID).emit("message", userMessage);
   });
 
   // socket disconnection
   socket.on("disconnect", () => {
     console.log(`User Disconnected`);
-    activeUserList.delete(socket.id)
+    activeUserList.delete(socket.id);
   });
 });
 

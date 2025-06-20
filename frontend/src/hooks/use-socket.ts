@@ -13,8 +13,9 @@ type UseSocketReturn = {
   disconnect: () => void;
   // events
   socketEmit: (event: string, data: EmitEvents) => void;
-  socketOn: (event: string, callback: (data: any) => void) => void;
+  socketOn: (event: string, callback: (data: Msg) => void) => void;
   socketOff: (event: string) => void;
+  joinRoom: (room: string, id: string) => void;
   //
   sendPrivateMessage: (user_message: Msg) => void;
   socketRef: object;
@@ -30,11 +31,14 @@ export const useSocket = (): UseSocketReturn => {
   const socketEmit = (event: string, data: EmitEvents) => {
     socketRef.current?.emit(event, data);
   };
-  const socketOn = (event: string, callback: (data: any) => void) => {
+  const socketOn = (event: string, callback: (data: Msg) => void) => {
     socketRef.current?.on(event, callback);
   };
   const socketOff = (event: string) => {
     socketRef.current?.off(event);
+  };
+  const joinRoom = (room: string, id: string) => {
+    socketRef.current?.emit(room, id);
   };
   const connect = () => {
     socketRef.current = io(import.meta.env.VITE_wsURL, {
@@ -63,7 +67,6 @@ export const useSocket = (): UseSocketReturn => {
 
   useEffect(() => {
     connect();
-    
 
     return () => {
       disconnect();
@@ -78,5 +81,6 @@ export const useSocket = (): UseSocketReturn => {
     socketEmit,
     socketOn,
     socketOff,
+    joinRoom,
   };
 };

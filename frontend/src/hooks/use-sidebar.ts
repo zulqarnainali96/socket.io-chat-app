@@ -3,7 +3,7 @@ import apiClient from "../api/apiContext";
 import { getLocalStorageData } from "../lib/local-storage";
 
 
-interface test {
+interface Test {
   _id: string;
   name: string;
   email: string;
@@ -23,7 +23,7 @@ const useSidebar = () => {
     apiClient.get("/api/v1/auth/get-all-users/"+userData.id).then((response) => {
       if (response.status === 200) {
         const { data } = response.data;
-        const newadata = data?.map((item: test) => {
+        const newadata = data?.map((item: Test) => {
           const obj: test2 = {
             id: item._id,
             name: item.name,

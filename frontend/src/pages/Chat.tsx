@@ -32,7 +32,7 @@ const Chat = () => {
             {chatMessage.map((item, i) => {
               return (
                 <React.Fragment key={i}>
-                  {item.receiverID === userData.id ? (
+                  {item.id !== userData.id ? (
                     <div
                       className="send my-1 flex flex-col rounded-t-2xl justify-baseline items-start gap-1 self-start px-6 p-5 bg-amber-300"
                     >
@@ -42,7 +42,7 @@ const Chat = () => {
                       </p>
                     </div>
                   ) : (
-                    <div
+                    <div  
                       className="receive my-1 flex-col rounded-t-2xl justify-baseline items-start gap-1 px-6 self-end flex p-5 bg-amber-300"
                     >
                       <h3>{item.msg}</h3>

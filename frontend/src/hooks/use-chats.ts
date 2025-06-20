@@ -16,6 +16,7 @@ const useChats = () => {
     socketRef,
     // socketId,
     socketOn,
+    joinRoom,
     // socketEmit,
     socketOff,
   } = useSocket();
@@ -79,7 +80,6 @@ const useChats = () => {
   ]);
 
   const sendMessage = useCallback(() => {
-    
     const user_message: Msg = {
       id: userData.id,
       name: "Zain",
@@ -96,8 +96,9 @@ const useChats = () => {
     setMessage("");
   }, [chatMessage, msg]);
 
-  const openUserChat = (item: Users) => { 
+  const openUserChat = (item: Users) => {
     setPersonData(item);
+    joinRoom("join-room", item.id);
     setPersonName(item.name);
   };
 
@@ -117,7 +118,7 @@ const useChats = () => {
     });
 
     socketOn("message", (data) => {
-      console.log(data)
+      console.log(data);
       chatMessage.push(data);
     });
 
@@ -125,7 +126,7 @@ const useChats = () => {
       socketOff("welcome");
       socketOff("message");
     };
-  }, [socketRef]);
+  }, [socketRef,chatMessage]);
 
   return {
     msg,
