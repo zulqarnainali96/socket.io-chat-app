@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
-import type { msg } from "../types/type";
+import type { Msg } from "../types/type";
 
 type EmitEvents = {
   data: object | string | boolean | [];
@@ -16,7 +16,7 @@ type UseSocketReturn = {
   socketOn: (event: string, callback: (data: any) => void) => void;
   socketOff: (event: string) => void;
   //
-  sendPrivateMessage: (user_message: msg) => void;
+  sendPrivateMessage: (user_message: Msg) => void;
   socketRef: object;
 };
 
@@ -24,7 +24,7 @@ export const useSocket = (): UseSocketReturn => {
   const [socketId, setSocketId] = useState<string | null>(null);
   const socketRef = useRef<Socket | null>(null);
 
-  const sendPrivateMessage = (user_message: msg) => {
+  const sendPrivateMessage = (user_message: Msg) => {
     socketRef.current?.emit("message", user_message);
   };
   const socketEmit = (event: string, data: EmitEvents) => {
@@ -54,7 +54,7 @@ export const useSocket = (): UseSocketReturn => {
 
   const disconnect = () => {
     if (socketRef.current) {
-      console.log("Manually disconnecting socket:", socketRef.current.id);
+      // console.log("Manually disconnecting socket:", socketRef.current.id);
       socketRef.current.disconnect();
       socketRef.current = null;
       setSocketId(null);
