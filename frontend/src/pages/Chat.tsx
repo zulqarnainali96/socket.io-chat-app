@@ -16,6 +16,7 @@ const Chat = () => {
     personName,
     loadChats,
     userData,
+    typing,
   } = useChats();
   return (
     <>
@@ -26,7 +27,7 @@ const Chat = () => {
             className="relative chat-section h-[91vh] px-4 py-8 w-full flex justify-baseline flex-col items-center"
           >
             <div className="typing absolute top-4 flex flex-col justify-center items-center">
-              <p className="text-lime-600 text-lg">Typing...</p>
+              <p className="text-lime-600 text-lg">{typing}</p>
               {loadChats && <Loader2Icon className="animate-spin" />}
             </div>
             {chatMessage.map((item, i) => {
@@ -55,7 +56,7 @@ const Chat = () => {
               );
             })}
           </div>
-          <article className="h-fit w-full flex justify-baseline items-center">
+          {personName && <article className="h-fit w-full flex justify-baseline items-center">
             <Input
               className="h-12"
               id="msg"
@@ -77,7 +78,7 @@ const Chat = () => {
             >
               Send
             </Button>
-          </article>
+          </article>}
         </section>
       </ChatSection>
     </>

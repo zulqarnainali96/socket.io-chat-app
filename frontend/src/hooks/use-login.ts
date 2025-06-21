@@ -10,8 +10,6 @@ const useLogin = () => {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    // Logic for handling login goes here
-    console.log("Login button clicked");
     setIsLoading(true);
     apiClient
       .post("/api/v1/auth/login-user", { email, password })

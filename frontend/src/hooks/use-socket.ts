@@ -16,6 +16,8 @@ type UseSocketReturn = {
   socketOn: (event: string, callback: (data: Msg) => void) => void;
   socketOff: (event: string) => void;
   joinRoom: (room: string, id: string) => void;
+  showTyping: (name: string) => void;
+  getTyping: (event: string, callback: (name: string) => void) => void;
   //
   sendPrivateMessage: (user_message: Msg) => void;
   socketRef: object;
@@ -39,6 +41,12 @@ export const useSocket = (): UseSocketReturn => {
   };
   const joinRoom = (room: string, id: string) => {
     socketRef.current?.emit(room, id);
+  };
+  const showTyping = (name: string) => {
+    socketRef.current?.emit("typing",name);
+  };
+  const getTyping = (event : string, callback : (name : string) => void) => {
+    socketRef.current?.on(event, callback);
   };
   const connect = () => {
     socketRef.current = io(import.meta.env.VITE_wsURL, {
@@ -82,5 +90,7 @@ export const useSocket = (): UseSocketReturn => {
     socketOn,
     socketOff,
     joinRoom,
+    showTyping,
+    getTyping,
   };
 };

@@ -10,8 +10,6 @@ const useRegister = () => {
   const navigate = useNavigate();
 
   const handleRegister = () => {
-    // Logic for handling login goes here
-    console.log("Register button clicked");
     setIsLoading(true);
     apiClient
       .post("/api/v1/auth/create-account", { email, password, name })

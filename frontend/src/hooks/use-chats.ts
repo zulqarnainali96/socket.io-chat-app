@@ -7,8 +7,9 @@ import { getLocalStorageData } from "../lib/local-storage";
 const useChats = () => {
   const userData = getLocalStorageData("user_data");
   const [msg, setMessage] = useState<string | undefined>("");
-  const [personName, setPersonName] = useState<string>("No Open Chats");
+  const [personName, setPersonName] = useState<string>("");
   const [personData, setPersonData] = useState<Users>();
+  const [typing, setTyping] = useState<string | "">("");
   const [loadChats, setLoadChats] = useState<boolean>(false);
   const chat_ref = useRef<HTMLDivElement>(null);
   const {
@@ -17,67 +18,13 @@ const useChats = () => {
     // socketId,
     socketOn,
     joinRoom,
-    // socketEmit,
+    socketEmit,
     socketOff,
+    showTyping,
+    getTyping,
   } = useSocket();
 
-  const [chatMessage, setChatMessage] = useState<Msg[]>([
-    // {
-    //   id: 1,
-    //   name: "Zain",
-    //   msg: "hi",
-    //   senderID: "123",
-    //   date: new Intl.DateTimeFormat("default", {
-    //     hour: "2-digit",
-    //     hour12: true,
-    //     minute: "2-digit",
-    //   }).format(new Date()),
-    // },
-    // {
-    //   id: 2,
-    //   name: "Ali",
-    //   msg: "hi",
-    //   senderID: "321",
-    //   date: new Intl.DateTimeFormat("default", {
-    //     hour: "2-digit",
-    //     hour12: true,
-    //     minute: "2-digit",
-    //   }).format(new Date()),
-    // },
-    // {
-    //   id: 3,
-    //   name: "Nadia",
-    //   msg: "how are you",
-    //   senderID: "123",
-    //   date: new Intl.DateTimeFormat("default", {
-    //     hour: "2-digit",
-    //     hour12: true,
-    //     minute: "2-digit",
-    //   }).format(new Date()),
-    // },
-    // {
-    //   id: 4,
-    //   name: "Sim",
-    //   msg: "I am good",
-    //   senderID: "321",
-    //   date: new Intl.DateTimeFormat("default", {
-    //     hour: "2-digit",
-    //     hour12: true,
-    //     minute: "2-digit",
-    //   }).format(new Date()),
-    // },
-    // {
-    //   id: 5,
-    //   name: "John",
-    //   msg: "nice",
-    //   senderID: "123",
-    //   date: new Intl.DateTimeFormat("default", {
-    //     hour: "2-digit",
-    //     hour12: true,
-    //     minute: "2-digit",
-    //   }).format(new Date()),
-    // },
-  ]);
+  const [chatMessage, setChatMessage] = useState<Msg[]>([]);
 
   const sendMessage = useCallback(() => {
     const user_message: Msg = {
@@ -116,20 +63,35 @@ const useChats = () => {
     socketOn("welcome", (data) => {
       console.log(data);
     });
+    socketEmit("welcome", userData);
 
     socketOn("message", (data) => {
       console.log(data);
-      chatMessage.push(data);
+      setChatMessage((prev) => [...prev, data]);
     });
+
+    getTyping("typing", (name) => {
+      setTyping(`${name} is Typing`);
+      console.log("Send Typing");
+    });
+    setTyping("")
 
     return () => {
       socketOff("welcome");
       socketOff("message");
     };
-  }, [socketRef,chatMessage]);
+  }, [socketRef]);
+
+  useEffect(() => {
+    // send typing event
+    showTyping(userData.name);
+
+    // let time = setInterval(() => {});
+  }, [msg]);
 
   return {
     msg,
+    typing,
     userData,
     chat_ref,
     personName,

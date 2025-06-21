@@ -47,8 +47,11 @@ io.on("connection", (socket) => {
   io.emit("welcome", "Hello From Server");
 
   socket.on("welcome", (userData) => {
-    activeUserList.set(userData.socketId, userData);
-    console.log(activeUserList);
+    if (userData.id) {
+      socket.join(userData.id);
+      activeUserList.set(userData?.id, userData);
+    }
+    // console.log(activeUserList);
   });
 
   socket.on("join-room", (id) => {
@@ -57,7 +60,6 @@ io.on("connection", (socket) => {
 
   socket.on("message", (userMessage) => {
     console.log(userMessage);
-    socket.join(userMessage.receiverID)
     socket.to(userMessage.receiverID).emit("message", userMessage);
   });
 
@@ -65,6 +67,10 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log(`User Disconnected`);
     activeUserList.delete(socket.id);
+  });
+
+  socket.on("typing", (name) => {
+    socket.emit("typing", name);
   });
 });
 

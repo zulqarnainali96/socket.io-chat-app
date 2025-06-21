@@ -11,7 +11,7 @@ const Header = ({ personName }: { personName?: string }) => {
     <Card className="w-full rounded-none flex flex-row justify-baseline items-centers p-[7px]">
       <SidebarTrigger />
       <CardContent className="relative w-full flex flex-row justify-center items-center">
-        <h3 className="text-center text-xl">{personName}</h3>
+        <h3 className="text-center text-xl">{personName ?? "No Open Chats"}</h3>
         <div className="absolute z-10 cursor-pointer right-0 top-[-19px]">
         <Popover>
           <PopoverTrigger>
