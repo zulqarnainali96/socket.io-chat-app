@@ -35,18 +35,14 @@ const Chat = () => {
               return (
                 <React.Fragment key={i}>
                   {item.id !== userData.id ? (
-                    <div
-                      className="send my-1 flex flex-col rounded-t-2xl justify-baseline items-start gap-1 self-start px-6 p-5 bg-amber-300"
-                    >
+                    <div className="send my-1 flex flex-col rounded-t-2xl justify-baseline items-start gap-1 self-start px-6 p-5 bg-amber-300">
                       <h3>{item.msg}</h3>
                       <p className="flex-col-reverse">
                         <i className="text-sm">{item.date}</i>
                       </p>
                     </div>
                   ) : (
-                    <div  
-                      className="receive my-1 flex-col rounded-t-2xl justify-baseline items-start gap-1 px-6 self-end flex p-5 bg-amber-300"
-                    >
+                    <div className="receive my-1 flex-col rounded-t-2xl justify-baseline items-start gap-1 px-6 self-end flex p-5 bg-amber-300">
                       <h3>{item.msg}</h3>
                       <p className="flex-col-reverse">
                         <i className="text-sm">{item.date}</i>
@@ -57,29 +53,31 @@ const Chat = () => {
               );
             })}
           </div>
-          {personName && <article className="h-fit w-full flex justify-baseline items-center">
-            <Input
-              className="h-12"
-              id="msg"
-              value={msg}
-              onChange={handleMessage}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  sendMessage();
-                }
-              }}
-              type="text"
-              placeholder="Type your message"
-              required
-            />
-            <Button
-              className="h-12 cursor-pointer"
-              variant="destructive"
-              onClick={sendMessage}
-            >
-              Send
-            </Button>
-          </article>}
+          {personName && (
+            <article className="h-fit w-full flex justify-baseline items-center">
+              <Input
+                className="h-12"
+                id="msg"
+                value={msg}
+                onChange={handleMessage}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    sendMessage();
+                  }
+                }}
+                type="text"
+                placeholder="Type your message"
+                required
+              />
+              <Button
+                className="h-12 cursor-pointer"
+                variant="destructive"
+                onClick={sendMessage}
+              >
+                Send
+              </Button>
+            </article>
+          )}
         </section>
       </ChatSection>
     </>

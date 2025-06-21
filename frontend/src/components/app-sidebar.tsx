@@ -11,7 +11,7 @@ import type { UserListProps, Users } from "../types/type";
 import useSidebar from "../hooks/use-sidebar";
 
 const UserList = ({ openUserChat }: UserListProps) => {
-  const { userList } = useSidebar();
+  const { userList, activeUser } = useSidebar();
   return (
     <>
       {userList.map((item) => {
@@ -20,7 +20,7 @@ const UserList = ({ openUserChat }: UserListProps) => {
             key={item.id}
             className="flex flex-row gap-2.5 relative py-6 px-2 bg-amber-400 rounded-3xl cursor-pointer transition-colors active:bg-amber-300"
             onClick={() => openUserChat(item)}
-          > 
+          >
             <img
               loading="lazy"
               className="rounded-full w-11 h-11 object-cover"
@@ -32,8 +32,15 @@ const UserList = ({ openUserChat }: UserListProps) => {
                 <b>last message :</b>
                 <i>{item.lastMessage.substring(0, 14)}</i>
               </span>
-              <span className="absolute right-4 top-4 w-3 h-3 bg-green-400 shadow-3xl rounded-full"></span>
-              {/* <span className="absolute right-3 top-3 w-3 h-3 bg-red-600 shadow rounded-full"></span> */}
+              {activeUser ? (
+                <span className="absolute right-4 top-4 w-auto h-auto px-2 text-white text-shadow-2xs font-semibold bg-green-400 shadow-3xl rounded-full">
+                  Active
+                </span>
+              ) : (
+                <span className="absolute right-4 top-4 w-auto h-auto px-2 text-white text-shadow-2xs font-semibold bg-red-400 shadow-3xl rounded-full">
+                  Offline
+                </span>
+              )}
             </div>
           </li>
         );

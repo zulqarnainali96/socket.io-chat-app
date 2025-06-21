@@ -53,6 +53,9 @@ io.on("connection", (socket) => {
     }
     // console.log(activeUserList);
   });
+  socket.on("user_active", (active) => {
+    socket.broadcast.emit("user_active", active);
+  });
 
   socket.on("join-room", (id) => {
     socket.join(id);
@@ -67,10 +70,11 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log(`User Disconnected`);
     activeUserList.delete(socket.id);
+    socket.broadcast.emit("not-active", false);
   });
 
-  socket.on("typing", (name) => {
-    socket.emit("typing", name);
+  socket.on("typing", (name, id) => {
+    socket.to(id).emit("typing", name);
   });
 
   socket.on("stop-typing", (name) => {

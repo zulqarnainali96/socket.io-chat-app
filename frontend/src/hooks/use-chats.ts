@@ -12,7 +12,7 @@ import { getLocalStorageData } from "../lib/local-storage";
 
 const useChats = () => {
   const userData = getLocalStorageData("user_data");
-  const [msg, setMessage] = useState<string | undefined>("");
+  const [msg, setMessage] = useState<string>("");
   const [personName, setPersonName] = useState<string>("");
   const [personData, setPersonData] = useState<Users>();
   const [typing, setTyping] = useState<string | "">("");
@@ -28,21 +28,19 @@ const useChats = () => {
     socketOff,
     showTyping,
     getTyping,
+    globalEmitSocket,
   } = useSocket();
 
   const [chatMessage, setChatMessage] = useState<Msg[]>([]);
 
   const handleMessage = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value) {
-      setMessage(e.target?.value);
-      showTyping("typing", userData.name);
-      debounceTyping();
-    } else {
-      showTyping("stop-typing", userData.name);
-    }
+    console.log(e.target.value);
+    setMessage(e.target.value);
+    showTyping("typing", userData.name, personData?.id);
   };
 
   const sendMessage = useCallback(() => {
+    if (!msg) return;
     const user_message: Msg = {
       id: userData.id,
       name: "Zain",
@@ -57,7 +55,7 @@ const useChats = () => {
     chatMessage.push(user_message);
     sendPrivateMessage(user_message);
     // Stop Indicator
-    showTyping("stop-typing",userData.name)
+    showTyping("stop-typing", userData.name, personData?.id);
 
     setMessage("");
   }, [chatMessage, msg]);
@@ -66,12 +64,6 @@ const useChats = () => {
     setPersonData(item);
     joinRoom("join-room", item.id);
     setPersonName(item.name);
-  };
-
-  const debounceTyping = () => {
-    setTimeout(() => {
-      showTyping("stop-typing", userData.name);
-    }, 2000);
   };
 
   useEffect(() => {
@@ -97,18 +89,29 @@ const useChats = () => {
 
     getTyping("typing", (name) => {
       setTyping(`${name} is Typing`);
-      console.log(name+" Send Typing");
     });
 
     getTyping("stop-typing", (name) => {
       setTyping("");
     });
 
+    globalEmitSocket("user_active", true);
+
     return () => {
       socketOff("welcome");
       socketOff("message");
     };
   }, [socketRef]);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      showTyping("stop-typing", userData.id, personData?.id);
+    }, 3000);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, [msg]);
 
   return {
     msg,
