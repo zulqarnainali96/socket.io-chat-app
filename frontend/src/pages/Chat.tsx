@@ -15,6 +15,7 @@ const Chat = () => {
     openUserChat,
     personName,
     loadChats,
+    handleMessage,
     userData,
     typing,
   } = useChats();
@@ -61,7 +62,7 @@ const Chat = () => {
               className="h-12"
               id="msg"
               value={msg}
-              onChange={(e) => setMessage(e.target.value)}
+              onChange={handleMessage}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   sendMessage();

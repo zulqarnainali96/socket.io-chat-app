@@ -72,6 +72,10 @@ io.on("connection", (socket) => {
   socket.on("typing", (name) => {
     socket.emit("typing", name);
   });
+
+  socket.on("stop-typing", (name) => {
+    socket.emit("stop-typing", name);
+  });
 });
 
 mongoose.connection.once("open", () => {

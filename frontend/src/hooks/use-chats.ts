@@ -1,5 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ChangeEvent,
+} from "react";
 import type { Msg, Users } from "../types/type";
 import { useSocket } from "./use-socket";
 import { getLocalStorageData } from "../lib/local-storage";
@@ -26,6 +32,16 @@ const useChats = () => {
 
   const [chatMessage, setChatMessage] = useState<Msg[]>([]);
 
+  const handleMessage = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value) {
+      setMessage(e.target?.value);
+      showTyping("typing", userData.name);
+      debounceTyping();
+    } else {
+      showTyping("stop-typing", userData.name);
+    }
+  };
+
   const sendMessage = useCallback(() => {
     const user_message: Msg = {
       id: userData.id,
@@ -40,6 +56,9 @@ const useChats = () => {
     };
     chatMessage.push(user_message);
     sendPrivateMessage(user_message);
+    // Stop Indicator
+    showTyping("stop-typing",userData.name)
+
     setMessage("");
   }, [chatMessage, msg]);
 
@@ -47,6 +66,12 @@ const useChats = () => {
     setPersonData(item);
     joinRoom("join-room", item.id);
     setPersonName(item.name);
+  };
+
+  const debounceTyping = () => {
+    setTimeout(() => {
+      showTyping("stop-typing", userData.name);
+    }, 2000);
   };
 
   useEffect(() => {
@@ -72,9 +97,12 @@ const useChats = () => {
 
     getTyping("typing", (name) => {
       setTyping(`${name} is Typing`);
-      console.log("Send Typing");
+      console.log(name+" Send Typing");
     });
-    setTyping("")
+
+    getTyping("stop-typing", (name) => {
+      setTyping("");
+    });
 
     return () => {
       socketOff("welcome");
@@ -82,19 +110,14 @@ const useChats = () => {
     };
   }, [socketRef]);
 
-  useEffect(() => {
-    // send typing event
-    showTyping(userData.name);
-
-    // let time = setInterval(() => {});
-  }, [msg]);
-
   return {
     msg,
     typing,
     userData,
     chat_ref,
     personName,
+    handleMessage,
+    setLoadChats,
     loadChats,
     openUserChat,
     setMessage,
