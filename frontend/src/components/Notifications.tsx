@@ -1,57 +1,27 @@
+// components/NotificationsDropdown.tsx
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { Bell } from "lucide-react";
 
-const Notifications = () => {
-  const notificationList = [
-    {
-        id : 1,
-        message : "Hi new message here",
-        type : "private-message",
-        from : "Zain",
-        fromImage : "",
-        fromId : "1123",
-        date : "12:30 PM",
-    },
-    {
-        id : 2,
-        message : "Hi new good",
-        type : "private-message",
-        from : "Zain",
-        fromImage : "",
-        fromId : "1123",
-        date : "12:30 PM",
-    },
-    {
-        id : 3,
-        message : "Hi how are you",
-        type : "private-message",
-        from : "Zain",
-        fromImage : "",
-        fromId : "1123",
-        date : "12:30 PM",
-    },
-    {
-        id : 4,
-        message : "Hi new message here",
-        type : "private-message",
-        from : "Zain",
-        fromImage : "",
-        fromId : "1123",
-        date : "12:30 PM",
-    },
-  ]
+export default function NotificationsDropdown() {
   return (
-    <div className="my-1">
-        <ul>
-            {notificationList.map(item => {
-                return (
-                    <li className="relative shadow-2xs w-full rounded-lg h-18 mb-1.5 active:bg-gray-300 bg-gray-400 p-3">
-                        <p className="text-white font-bold">{item.message}</p>
-                        <span className="absolute right-2 text-white text-wrap">{item.date}</span>
-                    </li>
-                )
-            })}
-        </ul>
-    </div>
-  )
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button className="relative p-2 rounded hover:bg-gray-200">
+          <Bell className="w-5 h-5" />
+          {/* Optional: notification dot */}
+          <span className="absolute top-1 right-1 inline-block w-2 h-2 bg-red-500 rounded-full" />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-56">
+        <DropdownMenuItem>👤 Friend Request Invite</DropdownMenuItem>
+        <DropdownMenuItem>💬 You received a new message</DropdownMenuItem>
+        <DropdownMenuItem>📢 System update available</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
 }
-
-export default Notifications

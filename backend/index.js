@@ -1,11 +1,20 @@
+require("dotenv").config();
 const { createServer } = require("http");
 const mongoose = require("mongoose");
 const express = require("express");
 const { Server } = require("socket.io");
 const { corsOptions } = require("./utils/corsOptions");
 const cors = require("cors");
+const path = require("path")
 const DatasebaseConnection = require("./db/database");
 const app = express();
+const fs = require("fs");
+
+const uploadsDir = path.join(__dirname, "uploads");
+
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir);
+}
 
 app.get("/", (req, res) => {
   res.write('<h1 style="font-style:italic">Hello From Server</h1>');
@@ -24,8 +33,10 @@ app.use(express.json());
 
 // Routes
 const loginRoutes = require("./routes/login-routes");
+const fileUpload = require("./routes/file-upload.route");
 
 app.use("/api/v1/auth", loginRoutes);
+app.use("/api/v1", fileUpload);
 
 // end
 
